@@ -1,13 +1,13 @@
 -- name: create-user!
 -- Create active user.
 INSERT INTO users
-(id, full_name, email, password, active, created)
-VALUES (:id, :full_name, :email, :password, 1, CURRENT_TIMESTAMP())
+(full_name, email, password, active, created)
+VALUES (:full_name, :email, :password, 1, CURRENT_TIMESTAMP())
 
 -- name: update-user!
 -- Update all columns with given id.
 UPDATE users
-SET full_name = :full_name, email = :email, password = :password, active = :active
+SET full_name = :full_name, email = :email, password = :password, active = true
 WHERE id = :id
 
 -- name: get-users

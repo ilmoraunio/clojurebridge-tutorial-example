@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="row">
+  <div class="col-md-12">
+    <h1 style="display:inline-block;">Edit user</h1>
+    <a href="/users"><button type="button" class="close"<span aria-hidden="true">&times;</span></button></a>
+    <hr/>
+  </div>
+</div>
+<form action="/user" method="POST">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="user_email">Email</label>
+        <input type="email" class="form-control" name="email" id="user_email" placeholder="Email" value="{{user.email | default-if-empty: ''}}" />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="user_email">Password</label>
+        <input type="password" class="form-control" name="password" id="user_password" placeholder="Password" value="{{user.password}}" />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <hr />
+      <div class="form-group">
+        <label for="user_email">Full name</label>
+        <input type="text" class="form-control" name="full_name" id="user_full_name" placeholder="Full name" value="{{user.full_name | default-if-empty: ''}}" />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      {% csrf-field %}
+      <input type="hidden" name="id" value="{{user.id}}" />
+      <input type="submit" class="btn btn-primary" value="Tallenna" />
+    </div>
+  </div>
+</form>
+{% endblock %}

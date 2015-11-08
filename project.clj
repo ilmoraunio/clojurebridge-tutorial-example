@@ -19,7 +19,9 @@
                  [com.h2database/h2 "1.4.190"]
                  [yesql "0.5.1"]
                  [prismatic/schema "1.0.3"]
-                 [crypto-password "0.1.3"]]
+                 [buddy "0.6.0"]
+                 [ring/ring-anti-forgery "1.0.0"]]
+  ;:jvm-opts ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"]
   :min-lein-version "2.0.0"
   :main ^:skip-aot global-growth.web
   :ring {:handler global-growth.web/app}

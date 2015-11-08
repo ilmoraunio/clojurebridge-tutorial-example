@@ -1,4 +1,4 @@
-(ns global-growth.db.users
+(ns global-growth.db.user
   (:require [yesql.core :refer [defquery defqueries]]
             [global-growth.core :as core]))
 
