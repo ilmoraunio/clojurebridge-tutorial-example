@@ -138,8 +138,6 @@
            (wrap-webjars "/webjars")
            (wrap-resource "")
            (wrap-defaults site-defaults)
-           (wrap-content-type)
-           (wrap-not-modified)
            wrap-json-response))
 
 (defonce server (atom nil))
