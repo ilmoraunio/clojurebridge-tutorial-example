@@ -15,7 +15,13 @@
                  [ring-webjars "0.1.1"]
                  [org.webjars/bootstrap "3.3.5"]
                  [selmer "0.9.3"]
-                 [org.slf4j/slf4j-log4j12 "1.7.1"]]
+                 [org.slf4j/slf4j-log4j12 "1.7.1"]
+                 [com.h2database/h2 "1.4.190"]
+                 [yesql "0.5.1"]
+                 [prismatic/schema "1.0.3"]
+                 [buddy "0.6.0"]
+                 [ring/ring-anti-forgery "1.0.0"]]
+  ;:jvm-opts ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"]
   :min-lein-version "2.0.0"
   :main ^:skip-aot global-growth.web
   :ring {:handler global-growth.web/app}

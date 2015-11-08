@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="row">
+    <div class="col-md-12">
+      <h1>Users</h1>
+      <hr/>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <td>Email</td>
+              <td>Full name</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+              <tr>
+                <td>
+                  <a href="/user/{{user.id}}">{{user.email}}</a>
+                </td>
+                <td>{{user.full_name}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+{% endblock %}

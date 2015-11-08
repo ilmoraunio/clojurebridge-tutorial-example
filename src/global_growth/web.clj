@@ -10,14 +10,16 @@
             [ring.middleware.not-modified :refer [wrap-not-modified]]
             [ring.middleware.webjars :refer [wrap-webjars]]
             [global-growth.core :as api]
-            [compojure.core :refer [defroutes GET]]
+            [compojure.core :refer [defroutes GET POST]]
             [compojure.handler :refer [site]]
             [compojure.route :as route]
             [hiccup.core :as hiccup]
             [hiccup.page :as page]
             [hiccup.form :as form]
             [clj-http.client :as client]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [schema.core :as s]
+            [global-growth.service.user :as user]))
 
 ;; WEB APP
 
@@ -97,6 +99,15 @@
 (defn selmer-page [context-map]
   (layout/render "selmer-page.html" context-map))
 
+(defn users-list-page [view-parameters]
+  (layout/render "users-list.html" view-parameters))
+
+(defn user-create-page [view-parameters]
+  (layout/render "user-create.html" view-parameters))
+
+(defn user-edit-page [view-parameters]
+  (layout/render "user-edit.html" view-parameters))
+
 (defn main-page []
   (layout "World Bank Indicators"
           [:h1 "World Bank Indicators"]
@@ -124,13 +135,36 @@
 (defn json-content [data]
   (-> data response/response (response/content-type "application/json")))
 
+(defn strip-anti-forgery-key
+  [dto]
+  (dissoc dto :__anti-forgery-token))
+
 (defroutes main-routes
   (GET "/" [] (main-page))
   (GET "/indicators" [indicator1 indicator2 year]
        (view-indicators indicator1 indicator2 year))
   (GET "/foo" [] (json-content (json/generate-string {:foo (:body (client/get "http://api.worldbank.org/countries?format=json&per_page=10" {:as :json}))})))
   (GET "/hiccup" [] (hiccup-page "Hik!"))
-  (GET "/selmer" [] (selmer-page {:hello-world "Hello world!"})))
+  (GET "/selmer" [] (selmer-page {:hello-world "Hello world!"}))
+  (GET "/users" [] (users-list-page 
+                     {:users (vec 
+                               (user/get-user))}))
+  (GET "/user/new" [] (user-create-page {}))
+  (POST "/user/new" req
+        (let [form (:params req)
+              user-dto (strip-anti-forgery-key form)]
+          (user/create-user! user-dto)
+          (response/redirect "/users")))
+  (GET "/user/:id" [id]
+       (user-edit-page {:user 
+                         (first (user/get-user id))}))
+  (POST "/user" req
+        (let [form (:params req)
+              stripped-dto (strip-anti-forgery-key form)
+              formatted-dto (assoc stripped-dto 
+                                   :id (Integer. (:id stripped-dto)))]
+          (user/update-user! formatted-dto)
+          (response/redirect "/users"))))
 
 ;(def handler (site main-routes))
 
@@ -138,8 +172,6 @@
            (wrap-webjars "/webjars")
            (wrap-resource "")
            (wrap-defaults site-defaults)
-           (wrap-content-type)
-           (wrap-not-modified)
            wrap-json-response))
 
 (defonce server (atom nil))

@@ -1,7 +1,14 @@
 (ns global-growth.core
   (:require [clojure.edn :as edn]
             [clj-http.client :as client]
-            [cheshire.core :as json]))
+            [cheshire.core :as json])
+  (:import java.sql.BatchUpdateException))
+
+(def db-spec {:classname    "org.h2.Driver"
+              :subprotocol  "h2"
+              :subname      "./resources/dev.db"
+              :user         "sa"
+              :password     "" })
 
 ;;;; MODULE 4
 
