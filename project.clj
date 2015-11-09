@@ -20,7 +20,8 @@
                  [yesql "0.5.1"]
                  [prismatic/schema "1.0.3"]
                  [buddy "0.6.0"]
-                 [ring/ring-anti-forgery "1.0.0"]]
+                 [ring/ring-anti-forgery "1.0.0"]
+                 [org.clojure/test.check "0.8.2"]]
   ;:jvm-opts ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"]
   :min-lein-version "2.0.0"
   :main ^:skip-aot global-growth.web
